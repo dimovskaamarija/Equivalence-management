@@ -48,4 +48,7 @@ public class Student {
         return String.format("%s %s %s", index, lastName, name);
     }
 
+    public StudyProgram getStudyProgram() {
+        return studyProgram;
+    }
 }

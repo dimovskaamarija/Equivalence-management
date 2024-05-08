@@ -1,0 +1,30 @@
+<form th:method="post" th:action="@{/ekvivalencii/save}" xmlns:sec="http://www.w3.org/1999/xhtml">
+    <div>
+        <label for="student">Request id:</label>
+        <input type="text" id="id" name="id" placeholder="ID" required />
+    </div>
+
+    <div>
+        <label for="student">Student Index:</label>
+        <input type="text" id="student" name="student" placeholder="Enter student index" required />
+    </div>
+    <div>
+        <label for="oldStudyProgram">Old Study Program:</label>
+        <select id="oldStudyProgram" name="oldStudyProgram">
+            <option th:each="oldStudyProgram : ${oldStudyPrograms}" th:value="${oldStudyProgram.code}" th:text="${oldStudyProgram.code}"></option>
+        </select>
+    </div>
+    <div>
+        <label for="newStudyProgram">New Study Program:</label>
+        <select id="newStudyProgram" name="newStudyProgram">
+            <option th:each="newStudyProgram : ${newStudyPrograms}" th:value="${newStudyProgram.code}" th:text="${newStudyProgram.code}"></option>
+        </select>
+    </div>
+    <div>
+        <label for="status">Status:</label>
+        <select id="status" name="status">
+            <option th:each="status : ${equivalenceStatusValues}" th:value="${status}" th:text="${status}"></option>
+        </select>
+    </div>
+    <button type="submit">Save</button>
+</form>

@@ -26,6 +26,7 @@ public class AuthConfig {
                                 "/admin/course-preferences/add",
                                 "/admin/course-preferences/edit/**",
                                 "/admin/course-preferences/save",
+                                "/ekvivalencii/**",
                                 "/admin/course-preferences").hasAnyRole(
                                 AppRole.PROFESSOR.name(),
                                 AppRole.ADMIN.name()

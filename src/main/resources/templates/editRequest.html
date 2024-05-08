@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Student Grade</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title">Промена на барање</h3>
+                </div>
+                <div class="card-body">
+                    <form   th:action="'/ekvivalencii/' + ${id} + '/edit'" method="POST">
+                        <input type="hidden" name="id" th:value="${id}" />
+                        <input type="hidden" name="id" th:value="${request.id}" />
+
+                        <div class="form-group">
+                            <label for="student">Студент:</label>
+                            <input type="text" class="form-control" id="student" th:value="${request.student.index}" name="student" placeholder="Enter Student Index">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="oldStudyProgram">Стара студиска програма:</label>
+                            <select class="form-control" id="oldStudyProgram" name="oldStudyProgram">
+                                <option th:each="oldStudyProgram : ${oldStudyPrograms}" th:value="${oldStudyProgram.code}" th:text="${oldStudyProgram.code}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="newStudyProgram">Нова студиска програма:</label>
+                            <select class="form-control" id="newStudyProgram" name="newStudyProgram">
+                                <option th:each="newStudyProgram : ${newStudyPrograms}" th:value="${newStudyProgram.code}" th:text="${newStudyProgram.code}"></option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="status">Статус на барање:</label>
+                            <select class="form-control" id="status" name="status">
+                                <option th:each="s : ${status}" th:value="${s.name()}" th:text="${s.name()}"></option>
+                            </select>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

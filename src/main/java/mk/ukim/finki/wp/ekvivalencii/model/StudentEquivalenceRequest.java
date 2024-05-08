@@ -35,4 +35,6 @@ public class StudentEquivalenceRequest {
 
         this.id = String.format("%s_%s_%s", student.getIndex(), oldStudyProgram.getCode(), newStudyProgram.getCode());
     }
+
+
 }

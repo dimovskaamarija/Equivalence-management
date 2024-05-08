@@ -22,6 +22,7 @@ public class StudyProgram {
 
     private String name;
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,4 +36,11 @@ public class StudyProgram {
         return getClass().hashCode();
     }
 
+    public String getCode() {
+        return code;
+    }
+
+    public String getName() {
+        return name;
+    }
 }
