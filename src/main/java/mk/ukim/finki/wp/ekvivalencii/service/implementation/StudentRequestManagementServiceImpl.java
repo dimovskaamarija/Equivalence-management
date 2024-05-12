@@ -33,10 +33,7 @@ public class StudentRequestManagementServiceImpl  implements StudentRequestManag
         this.studentService = studentService;
     }
 
-   // @Override
-//    public List<StudentEquivalenceRequest> getAllStudentRequestManagement() {
-//        return this.studentRequestManagementRepository.findAll();
-//    }
+
 
     @Override
     public List<StudentEquivalenceRequest> getAllStudentRequestManagement() {
@@ -70,9 +67,9 @@ public class StudentRequestManagementServiceImpl  implements StudentRequestManag
     }
 
     @Override
-    public Optional<StudentEquivalenceRequest> save(String id, Student student, StudyProgram oldStudyProgram, StudyProgram newStudyProgram, EquivalenceStatus status) {
-     //StudentEquivalenceRequest studentEquivalenceRequest=new StudentEquivalenceRequest(student,oldProgram,newProgram);
-        return Optional.of(this.studentRequestManagementRepository.save(new StudentEquivalenceRequest(id,student,oldStudyProgram,newStudyProgram,status)));
+    public Optional<StudentEquivalenceRequest> save( Student student, StudyProgram oldStudyProgram, StudyProgram newStudyProgram, EquivalenceStatus status) {
+
+        return Optional.of(this.studentRequestManagementRepository.save(new StudentEquivalenceRequest(student,oldStudyProgram,newStudyProgram,status)));
     }
     @Override
     public void deleteById(String id) {

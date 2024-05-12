@@ -36,11 +36,5 @@ public class StudyProgram {
         return getClass().hashCode();
     }
 
-    public String getCode() {
-        return code;
-    }
 
-    public String getName() {
-        return name;
-    }
 }

@@ -12,7 +12,6 @@ import java.util.Optional;
 
 @Repository
 public interface StudentRequestManagementRepository  extends JpaSpecificationRepository<StudentEquivalenceRequest,String> {
-   // List<StudentEquivalenceRequest> getAllStudentRequestManagement();
    Page<StudentEquivalenceRequest> findByStudent(Optional<Student> student, Pageable pageable);
 
    Page<StudentEquivalenceRequest> findByOldStudyProgram(StudyProgram oldStudyProgram, Pageable pagable);

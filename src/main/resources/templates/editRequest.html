@@ -1,11 +1,15 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
 <head>
     <meta charset="UTF-8">
     <title>Edit Student Grade</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
+
+<div class="mt-4" layout:fragment="content">
 <div class="container mt-5">
     <div class="row justify-content-center">
         <div class="col-md-6">
@@ -26,7 +30,7 @@
                         <div class="form-group">
                             <label for="oldStudyProgram">Стара студиска програма:</label>
                             <select class="form-control" id="oldStudyProgram" name="oldStudyProgram">
-                                <option th:each="oldStudyProgram : ${oldStudyPrograms}" th:value="${oldStudyProgram.code}" th:text="${oldStudyProgram.code}"></option>
+                                <option th:each="oldStudyProgram : ${oldStudyPrograms}" th:value="${oldStudyProgram.code}" th:text="${oldStudyProgram.code}" th:selected="${oldStudyProgram.code==request.oldStudyProgram.code}"></option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -43,15 +47,14 @@
                         </div>
 
 
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" class="btn btn-success ml-2">Save</button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Bootstrap JS -->
+</div>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

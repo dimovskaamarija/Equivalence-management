@@ -27,7 +27,7 @@ public interface StudentRequestManagementService  {
 
     Page<StudentEquivalenceRequest> list(Specification<StudentEquivalenceRequest> spec, int page, int size);
 
-    Optional<StudentEquivalenceRequest> save(String id, Student student, StudyProgram oldStudyProgram, StudyProgram newStudyProgram,
+    Optional<StudentEquivalenceRequest> save(Student student, StudyProgram oldStudyProgram, StudyProgram newStudyProgram,
                                              EquivalenceStatus status);
 
     void deleteById(String id);

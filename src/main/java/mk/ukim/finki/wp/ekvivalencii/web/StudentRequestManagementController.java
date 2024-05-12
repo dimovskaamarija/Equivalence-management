@@ -36,57 +36,37 @@ public class StudentRequestManagementController {
         this.studyProgramService = studyProgramService;
         this.studentService = studentService;
     }
-    
-//    @GetMapping("/ekvivalencii")
-//    public String getStudentRequestManagement(Model model,
-//                                              @RequestParam(defaultValue = "1") Integer pageNum,
-//                                              @RequestParam(defaultValue = "10") Integer results,
-//                                              @RequestParam(required = false) String index,
-//                                              @RequestParam(required = false) String oldStudyProgram,
-//                                              @RequestParam(required = false) String newStudyProgram,
-//                                              @RequestParam(required = false) String status) {
-//        Page<StudentEquivalenceRequest> studentEquivalenceRequestPage;
-//        Specification<StudentEquivalenceRequest> spec =Specification.where(filterContainsText(StudentEquivalenceRequest.class, "student.index",index));
-//
-//
-//        spec = spec.and(filterEqualsV(StudentEquivalenceRequest.class, "oldStudyProgram", oldStudyProgram != null && !oldStudyProgram.isEmpty() ? oldStudyProgram.valueOf(oldStudyProgram) : null))
-//                .and(filterEqualsV(StudentEquivalenceRequest.class, "newStudyProgram", newStudyProgram != null && !newStudyProgram.isEmpty() ? newStudyProgram.valueOf(newStudyProgram) : null))
-//                .and(filterEqualsV(StudentEquivalenceRequest.class, "status", status));
-//        studentEquivalenceRequestPage = service.list(spec, pageNum, results);
-//
-//        model.addAttribute("page", studentEquivalenceRequestPage);
-//model.addAttribute("requests",studentEquivalenceRequestPage.getContent());
-//model.addAttribute("oldStudyPrograms",this.studyProgramService.findAll());
-//model.addAttribute("newStudyPrograms",this.studyProgramService.findAll());
-//        return "listStudentRequestManagement";
-//    }
 
-    @GetMapping("/ekvivalencii")
-    public String getStudentRequestManagement(Model model,
-                                              @RequestParam(defaultValue = "1") Integer pageNum,
-                                              @RequestParam(defaultValue = "10") Integer results,
-                                              @RequestParam(required = false) String index,
-                                              @RequestParam(required = false) String oldStudyProgram,
-                                              @RequestParam(required = false) String newStudyProgram,
-                                              @RequestParam(required = false) String status) {
-        Page<StudentEquivalenceRequest> studentEquivalenceRequestPage;
+@GetMapping("/ekvivalencii")
+public String getStudentRequestManagement(Model model,
+                                          @RequestParam(defaultValue = "1") Integer pageNum,
+                                          @RequestParam(defaultValue = "10") Integer results,
+                                          @RequestParam(required = false) String index,
+                                          @RequestParam(required = false) String oldStudyProgram,
+                                          @RequestParam(required = false) String newStudyProgram,
+                                          @RequestParam(required = false) String status) {
+    Page<StudentEquivalenceRequest> studentEquivalenceRequestPage;
 
-        Specification<StudentEquivalenceRequest> spec = Specification.where(filterEquals(StudentEquivalenceRequest.class, "student.index", index))
-                .or(filterEqualsV(StudentEquivalenceRequest.class, "oldStudyProgram.code", oldStudyProgram))
-                .or(filterEqualsV(StudentEquivalenceRequest.class, "newStudyProgram.code", newStudyProgram))
+    Specification<StudentEquivalenceRequest> spec = Specification.where(filterEquals(StudentEquivalenceRequest.class, "student.index", index));
 
-                .or(filterEqualsV(StudentEquivalenceRequest.class, "status", status));
 
-        studentEquivalenceRequestPage = service.list(spec, pageNum, results);
-
-        model.addAttribute("page", studentEquivalenceRequestPage);
-        model.addAttribute("requests", studentEquivalenceRequestPage.getContent());
-        model.addAttribute("oldStudyPrograms", this.studyProgramService.findAll());
-        model.addAttribute("newStudyPrograms", this.studyProgramService.findAll());
-
-        return "listStudentRequestManagement";
+    if (oldStudyProgram != null && !oldStudyProgram.isEmpty()) {
+        spec = spec.and(filterEqualsV(StudentEquivalenceRequest.class, "oldStudyProgram.code", oldStudyProgram));
+    }
+    if (newStudyProgram != null && !newStudyProgram.isEmpty()) {
+        spec = spec.and(filterEqualsV(StudentEquivalenceRequest.class, "newStudyProgram.code", newStudyProgram));
+    }
+    if (status != null && !status.isEmpty()) {
+        spec = spec.and(filterEqualsV(StudentEquivalenceRequest.class, "status", status));
     }
 
+    studentEquivalenceRequestPage = service.list(spec, pageNum, results);
+    model.addAttribute("page", studentEquivalenceRequestPage);
+    model.addAttribute("requests", studentEquivalenceRequestPage.getContent());
+    model.addAttribute("oldStudyPrograms", this.studyProgramService.findAll());
+    model.addAttribute("newStudyPrograms", this.studyProgramService.findAll());
+    return "listStudentRequestManagement";
+}
     private <T> Specification<T> filterEquals(Class<T> entityClass, String attributeName, String attributeValue) {
         if (attributeValue != null && !attributeValue.isEmpty()) {
             return (root, query, criteriaBuilder) -> {
@@ -97,9 +77,6 @@ public class StudentRequestManagementController {
             return null;
         }
     }
-
-
-
 
     @GetMapping("/ekvivalencii/add")
 public String addRequest(Model model) {
@@ -112,26 +89,22 @@ public String addRequest(Model model) {
     model.addAttribute("equivalenceStatusValues",EquivalenceStatus.values());
     return "formStudenRequestManagement";
 }
-
-
-
     @PostMapping("/ekvivalencii/save")
     public String save(@RequestParam (required = false)  String id,
                        @RequestParam (required = false) Student student,
                        @RequestParam (required = false)  StudyProgram oldStudyProgram,
                        @RequestParam (required = false)  StudyProgram newStudyProgram,
-                       @RequestParam (required = false)  EquivalenceStatus status) {
-        this.service.save(id,student, oldStudyProgram, newStudyProgram, status);
+                       @RequestParam (defaultValue = "REQUESTED")  EquivalenceStatus status) {
+        StudyProgram oldSP=student.getStudyProgram();
+        this.service.save(student, oldSP, newStudyProgram, status);
         return "redirect:/ekvivalencii";
-
     }
 
-@PostMapping("/ekvivalencii/{id}/delete")
+    @PostMapping("/ekvivalencii/{id}/delete")
 public String delete(@PathVariable String id) {
     this.service.deleteById(id);
     return "redirect:/ekvivalencii";
 }
-
 @GetMapping("/ekvivalencii/{id}/edit")
 public String edit(@PathVariable String id, Model model){
     if(this.service.findByIndex(id).isPresent()) {
@@ -158,7 +131,5 @@ public String editStudentGrades (@PathVariable String id,
     this.service.edit(id, student, oldStudyProgram, newStudyProgram,status);
     return "redirect:/ekvivalencii";
 }
-
-
 
 }
