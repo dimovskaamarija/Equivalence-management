@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      layout:decorate="~{layout}">
+<head>
+    <title>Student Grades Display</title>
+</head>
+<body>
+<div class="mt-4" layout:fragment="content">
+
+    <div class="row mb-3">
+        <div class="col-6">
+            <div class="card">
+                <div class="card-header">
+                    Import Student Grades
+                </div>
+                <div class="card-body">
+                    <form th:action="@{'/ekvivalencii/{id}/import' (id=${id})}" th:method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group mt-1">
+                                    <input class="form-control" type="file" name="file" id="file" required>
+                                </div>
+                            </div>
+                            <div class="col-12 text-end">
+                                <button class="btn btn-primary mt-2 mb-2" type="submit">Import</button>
+                                <a th:href="@{'/ekvivalencii/' + ${id} + '/sample-tsv'}" class="btn btn-secondary mt-2 mb-2">Template</a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <form th:action="@{'/ekvivalencii/' + ${id}}" method="get" class="mb-4">
+        <div class="row">
+            <hr/>
+            <div class="col-md-2">
+                <input type="text" th:value="${param.index}" placeholder="Student" name="index"
+                       class="form-control"/>
+            </div>
+            <div class="col-md-2">
+                <input type="text" th:value="${param.subjectId}" placeholder="Subject" name="subjectId"
+                       class="form-control"/>
+            </div>
+            <div class="col-md-1">
+                <a th:href="@{/ekvivalencii/{id}/export(id=${id})}" target="_blank">Export</a>
+            </div>
+            <div class="col-md-1">
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </div>
+            <p></p>
+            <hr/>
+        </div>
+    </form>
+
+    <div class="mb-3">
+        <a class="btn btn-success ml-2" th:href="@{'/ekvivalencii/' + ${id} + '/add'}">Додади нов предмет</a>
+    </div>
+
+    <h3>Student Grades Display</h3>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Subject</th>
+            <th>Student</th>
+            <th>Date</th>
+            <th>Grade</th>
+            <th>Ects Grade</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="studentGrade : ${page.getContent()}">
+            <td th:text="${studentGrade.student.index}"></td>
+            <td th:text="${studentGrade.getSubject().id}"></td>
+            <td th:text="${studentGrade.getGradeDate()}"></td>
+            <td th:text="${studentGrade.getGrade()}"></td>
+            <td th:text="${studentGrade.getEctsGrade()}"></td>
+            <td>
+                <a th:href="@{/ekvivalencii/{id}/edit(id=${studentGrade.id})}">
+                    <button type="button" class="btn btn-primary">Edit</button>
+                </a>
+                <form th:action="@{/ekvivalencii/{id}/delete(id=${studentGrade.id})}" method="post">
+                    <input type="hidden" name="_method" value="delete" />
+                    <button type="submit" class="btn btn-danger" sec:authorize="hasRole('ROLE_ADMIN')"
+                            onclick="return confirm('Are you sure you want to delete this course preference?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div th:include="fragments/paging :: pageSection(${page})"></div>
+</div>
+</body>
+</html>
