@@ -1,4 +1,4 @@
-package mk.ukim.finki.wp.ekvivalencii.model.dto;
+package mk.ukim.finki.wp.ekvivalencii.model.DTO;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.*;
@@ -24,5 +24,4 @@ public class StudentDto {
     private String studyProgramCode;
 
     private String message;
-
 }
