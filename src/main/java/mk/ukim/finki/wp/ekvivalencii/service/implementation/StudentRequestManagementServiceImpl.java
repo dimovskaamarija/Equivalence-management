@@ -14,7 +14,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -27,18 +26,10 @@ public class StudentRequestManagementServiceImpl  implements StudentRequestManag
     public StudentRequestManagementServiceImpl(StudentRequestManagementRepository studentRequestManagementRepository, StudentRepository studentRepository, StudyProgramRepository studyProgramRepository, StudentService studentService) {
         this.studentRequestManagementRepository = studentRequestManagementRepository;
         this.studentRepository = studentRepository;
-
-
         this.studyProgramRepository = studyProgramRepository;
         this.studentService = studentService;
     }
 
-
-
-    @Override
-    public List<StudentEquivalenceRequest> getAllStudentRequestManagement() {
-        return this.studentRequestManagementRepository.findAll();
-    }
 
     @Override
     public Optional<StudentEquivalenceRequest> edit(String id, Student student, StudyProgram oldStudyProgram, StudyProgram newStudyProgram, EquivalenceStatus status) {

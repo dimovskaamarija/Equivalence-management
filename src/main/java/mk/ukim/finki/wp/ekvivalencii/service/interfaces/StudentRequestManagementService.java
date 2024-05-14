@@ -1,20 +1,18 @@
 package mk.ukim.finki.wp.ekvivalencii.service.interfaces;
 
-import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import mk.ukim.finki.wp.ekvivalencii.model.EquivalenceStatus;
 import mk.ukim.finki.wp.ekvivalencii.model.Student;
 import mk.ukim.finki.wp.ekvivalencii.model.StudentEquivalenceRequest;
 import mk.ukim.finki.wp.ekvivalencii.model.StudyProgram;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
 
 
 public interface StudentRequestManagementService  {
-    List<StudentEquivalenceRequest> getAllStudentRequestManagement();
 
 
     @Enumerated(EnumType.STRING)

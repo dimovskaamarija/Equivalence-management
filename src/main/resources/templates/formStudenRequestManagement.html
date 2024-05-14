@@ -3,11 +3,9 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Додавање ново барање </title>
 
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<title>Додавање ново барање </title>
+
     <style>
         #status{
             display: none;
@@ -25,7 +23,7 @@
                     <h3 class="card-title">Додавање ново барање</h3>
                 </div>
                 <div class="card-body">
-<form th:method="post" th:action="@{/ekvivalencii/save}" xmlns:sec="http://www.w3.org/1999/xhtml">
+                    <form th:method="post" th:action="@{/ekvivalencii/save}">
     <div class="form-group" >
         <input type="hidden" id="id" name="id" placeholder="ID" required />
     </div>
@@ -59,10 +57,6 @@
         </div>
     </div>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
  </div>
 </body>
 </html>

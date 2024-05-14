@@ -1,7 +1,5 @@
 package mk.ukim.finki.wp.ekvivalencii.web;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.persistence.criteria.Join;
 import mk.ukim.finki.wp.ekvivalencii.model.EquivalenceStatus;
 import mk.ukim.finki.wp.ekvivalencii.model.Student;
 import mk.ukim.finki.wp.ekvivalencii.model.StudentEquivalenceRequest;
@@ -13,13 +11,15 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-import static mk.ukim.finki.wp.ekvivalencii.service.interfaces.specifications.FieldFilterSpecification.filterContainsText;
+import static mk.ukim.finki.wp.ekvivalencii.service.interfaces.specifications.FieldFilterSpecification.filterEquals;
 import static mk.ukim.finki.wp.ekvivalencii.service.interfaces.specifications.FieldFilterSpecification.filterEqualsV;
-import static org.springframework.data.jpa.domain.Specification.where;
 
 
 @Controller
@@ -67,17 +67,6 @@ public String getStudentRequestManagement(Model model,
     model.addAttribute("newStudyPrograms", this.studyProgramService.findAll());
     return "listStudentRequestManagement";
 }
-    private <T> Specification<T> filterEquals(Class<T> entityClass, String attributeName, String attributeValue) {
-        if (attributeValue != null && !attributeValue.isEmpty()) {
-            return (root, query, criteriaBuilder) -> {
-                Join<T, Student> studentJoin = root.join("student");
-                return criteriaBuilder.equal(studentJoin.get("index"), attributeValue);
-            };
-        } else {
-            return null;
-        }
-    }
-
     @GetMapping("/ekvivalencii/add")
 public String addRequest(Model model) {
     List<Student> students=this.studentService.getAllStudents();
