@@ -1,8 +1,8 @@
 package mk.ukim.finki.wp.ekvivalencii.service.implementation;
 
 
+import mk.ukim.finki.wp.ekvivalencii.model.DTO.StudentDto;
 import mk.ukim.finki.wp.ekvivalencii.model.Student;
-import mk.ukim.finki.wp.ekvivalencii.model.dto.StudentDto;
 import mk.ukim.finki.wp.ekvivalencii.repository.StudentRepository;
 import mk.ukim.finki.wp.ekvivalencii.repository.StudyProgramRepository;
 import mk.ukim.finki.wp.ekvivalencii.service.interfaces.StudentService;
@@ -23,7 +23,6 @@ public class StudentServiceImpl implements StudentService {
         this.studentRepository = studentRepository;
         this.studyProgramRepository = studyProgramRepository;
     }
-
 
     @Override
     public Optional<Student> getStudentById(String id) {
