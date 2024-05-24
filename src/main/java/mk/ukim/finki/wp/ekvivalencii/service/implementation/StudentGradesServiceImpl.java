@@ -132,4 +132,9 @@ public class StudentGradesServiceImpl implements StudentGradesService {
         }
         return invalidGrades;
     }
+
+    @Override
+    public StudentGrades saveStudentGrades(StudentGrades studentGrades) {
+        return studentGradesRepository.save(studentGrades);
+    }
 }

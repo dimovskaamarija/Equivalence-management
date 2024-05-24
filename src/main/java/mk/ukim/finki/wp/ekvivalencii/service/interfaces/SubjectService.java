@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface SubjectService {
     List<Subject> getAllSubjects();
-
+    Subject findSubjectById(String id);
     Subject getSubjectById(String mainSubjectId) throws SubjectNotFoundException;
 }

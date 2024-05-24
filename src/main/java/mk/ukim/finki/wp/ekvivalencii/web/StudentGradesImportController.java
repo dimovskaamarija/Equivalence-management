@@ -10,15 +10,13 @@ import mk.ukim.finki.wp.ekvivalencii.repository.ImportRepository;
 import mk.ukim.finki.wp.ekvivalencii.service.interfaces.StudentGradesService;
 import mk.ukim.finki.wp.ekvivalencii.service.interfaces.StudentService;
 import mk.ukim.finki.wp.ekvivalencii.service.interfaces.SubjectService;
+import mk.ukim.finki.wp.ekvivalencii.service.specifications.FieldFilterSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -27,8 +25,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static mk.ukim.finki.wp.ekvivalencii.service.interfaces.specifications.FieldFilterSpecification.filterEquals;
 import static mk.ukim.finki.wp.ekvivalencii.service.specifications.FieldFilterSpecification.filterEqualsV;
 
 @Controller
@@ -47,6 +47,7 @@ public class StudentGradesImportController {
 
     @GetMapping("/ekvivalencii/student-grades/{id}")
     public String getStudentGrades(@PathVariable String id,
+                                   @ModelAttribute StudentGrades studentGrade,
                                    @RequestParam(defaultValue = "1") Integer pageNum,
                                    @RequestParam(defaultValue = "10") Integer results,
                                    @RequestParam(required = false) String index,
@@ -54,7 +55,10 @@ public class StudentGradesImportController {
                                    Model model) {
 
         Page<StudentGrades> studentGradesPage;
+        Student student = studentService.findStudentByIndex(studentGrade.getStudent().getIndex());
+        Subject subject = subjectService.findSubjectById(studentGrade.getSubject().getId());
 
+        studentGrade.setId(String.format("%s_%s", student.getIndex(), subject.getId()));
         Specification<StudentGrades> spec = Specification.where(filterEquals(StudentGrades.class, "student.index", index));
 
         if (subjectId != null && !subjectId.isEmpty()) {
@@ -74,30 +78,19 @@ public class StudentGradesImportController {
         return "list";
     }
 
-    private <T> Specification<T> filterEquals(Class<T> entityClass, String attributeName, String attributeValue) {
-        if (attributeValue != null && !attributeValue.isEmpty()) {
-            return (root, query, criteriaBuilder) -> {
-                Join<T, Student> studentJoin = root.join("student");
-                return criteriaBuilder.equal(studentJoin.get("index"), attributeValue);
-            };
-        } else {
-            return null;
-        }
-    }
-
     @GetMapping("/ekvivalencii/student-grades/{id}/add")
     public String showAddStudentGradeForm(@PathVariable String id,
                                           Model model) {
         List<Student> students = studentService.getAllStudents();
         List<Subject> subjects = subjectService.getAllSubjects();
-        model.addAttribute("id", id);
+        //model.addAttribute("id", id);
         model.addAttribute("studentGrade", new StudentGrades());
         model.addAttribute("students", students);
         model.addAttribute("subjects", subjects);
         return "add";
     }
 
-    @PostMapping("/ekvivalencii/student-grades/{id}/save")
+    /*@PostMapping("/ekvivalencii/student-grades/{id}/save")
     public String addStudentGrade(@PathVariable String id,
                                   @RequestParam Student student,
                                   @RequestParam Subject subject,
@@ -105,6 +98,18 @@ public class StudentGradesImportController {
                                   @RequestParam Short grade,
                                   @RequestParam String ectsGrade) {
         this.studentGradesService.save(student, subject, gradeDate, grade, ectsGrade);
+        return "redirect:/ekvivalencii/student-grades/{id}";
+    }*/
+
+    @PostMapping("/ekvivalencii/student-grades/{id}/save")
+    public String saveStudentGrade(@ModelAttribute StudentGrades studentGrade,
+                                   @PathVariable String id) {
+        Student student = studentService.findStudentByIndex(studentGrade.getStudent().getIndex());
+        Subject subject = subjectService.findSubjectById(studentGrade.getSubject().getId());
+        studentGrade.setId(String.format("%s_%s", student.getIndex(), subject.getId()));
+        studentGrade.setStudent(student);
+        studentGrade.setSubject(subject);
+        studentGradesService.saveStudentGrades(studentGrade);
         return "redirect:/ekvivalencii/student-grades/{id}";
     }
 
@@ -182,7 +187,7 @@ public class StudentGradesImportController {
     public void export(Model model,
                        @PathVariable String id,
                        @RequestParam(defaultValue = "1") Integer pageNum,
-                       @RequestParam(defaultValue = "100000") Integer results,
+                       @RequestParam(defaultValue = "100") Integer results,
                        @RequestParam(required = false) String index,
                        @RequestParam(required = false) String subjectId,
                        @RequestParam(required = false) String gradeDate,

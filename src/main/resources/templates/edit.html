@@ -19,7 +19,6 @@
                     </div>
                     <div class="card-body">
                         <form th:action="'/ekvivalencii/student-grades/' + ${id} + '/edit'" method="POST">
-                            <!--    <input type="hidden" name="id" th:value="${id}" /> -->
                             <input type="hidden" name="id" th:value="${studentGrades.id}"/>
 
                             <div class="form-group">
@@ -33,7 +32,7 @@
                                 <label for="subject">Предмет:</label>
                                 <select class="form-control" id="subject" name="subject">
                                     <option th:each="subject : ${subjects}" th:value="${subject.id}"
-                                            th:text="${subject.name}"
+                                            th:text="${subject.id} + ' ' +  '(' + ${subject.name} + ')'"
                                             th:selected="${subject.id == studentGrades.subject.id}"></option>
                                 </select>
                             </div>
@@ -41,17 +40,18 @@
                             <div class="form-group">
                                 <label for="gradeDate">Датум на внес на оценка:</label>
                                 <input type="datetime-local" class="form-control" id="gradeDate" name="gradeDate"
+                                       th:value="${studentGrades.gradeDate}"
                                        required>
                             </div>
 
                             <div class="form-group">
-                                <label for="grade">Оценка:</label>
-                                <input type="number" class="form-control" id="grade" name="grade" required>
+                                <label for="grade" >Оценка:</label>
+                                <input type="number" class="form-control" id="grade" name="grade" th:value="${studentGrades.grade}" required>
                             </div>
 
                             <div class="form-group">
                                 <label for="ectsGrade">Кредити:</label>
-                                <input type="text" class="form-control" id="ectsGrade" name="ectsGrade" required>
+                                <input type="text" class="form-control" id="ectsGrade" name="ectsGrade" th:value="${studentGrades.ectsGrade}" required>
                             </div>
 
                             <button type="submit" class="btn btn-primary">Save</button>

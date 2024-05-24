@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 public interface StudentService {
-    Optional<Student> getStudentById(String id);
+    Student findStudentByIndex(String index);
     Page<Student> find(Integer page, Integer size, String nameOrIndex, String studyProgramCode);
     List<StudentDto> importStudents(List<StudentDto> students);
     List<Student> getAllStudents();
+    Optional<Student> getStudentById(String studentIndex);
 }

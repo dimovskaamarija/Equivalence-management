@@ -30,4 +30,10 @@ public class SubjectServiceImpl implements SubjectService {
         return subjectRepository.findById(mainSubjectId)
                 .orElseThrow(() -> new SubjectNotFoundException("Main subject not found with id: " + mainSubjectId));
     }
+
+    @Override
+    public Subject findSubjectById(String id) {
+        return subjectRepository.findById(id).orElseThrow(() ->
+                new IllegalArgumentException("Subject not found with id: " + id));
+    }
 }
