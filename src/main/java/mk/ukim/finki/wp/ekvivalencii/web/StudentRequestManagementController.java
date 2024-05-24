@@ -4,6 +4,7 @@ import mk.ukim.finki.wp.ekvivalencii.model.EquivalenceStatus;
 import mk.ukim.finki.wp.ekvivalencii.model.Student;
 import mk.ukim.finki.wp.ekvivalencii.model.StudentEquivalenceRequest;
 import mk.ukim.finki.wp.ekvivalencii.model.StudyProgram;
+import mk.ukim.finki.wp.ekvivalencii.model.exceptions.StudentNotFoundException;
 import mk.ukim.finki.wp.ekvivalencii.service.interfaces.StudentRequestManagementService;
 import mk.ukim.finki.wp.ekvivalencii.service.interfaces.StudentService;
 import mk.ukim.finki.wp.ekvivalencii.service.interfaces.StudyProgramService;
@@ -11,12 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static mk.ukim.finki.wp.ekvivalencii.service.interfaces.specifications.FieldFilterSpecification.filterEquals;
 import static mk.ukim.finki.wp.ekvivalencii.service.interfaces.specifications.FieldFilterSpecification.filterEqualsV;
@@ -67,9 +66,17 @@ public String getStudentRequestManagement(Model model,
     model.addAttribute("newStudyPrograms", this.studyProgramService.findAll());
     return "listStudentRequestManagement";
 }
+    @ExceptionHandler(StudentNotFoundException.class)
+    public String handleNoSuchElementException(StudentNotFoundException ex, Model model) {
+        model.addAttribute("message", ex.getMessage());
+        return "errorPage";
+    }
     @GetMapping("/ekvivalencii/add")
 public String addRequest(Model model) {
     List<Student> students=this.studentService.getAllStudents();
+    if(students.isEmpty()){
+        throw new StudentNotFoundException("No students found.");
+    }
     List<StudyProgram> oldStudyPrograms=this.studyProgramService.findAll();
     List<StudyProgram> newStudyPrograms=this.studyProgramService.findAll();
     model.addAttribute("students", students);

@@ -69,7 +69,7 @@
         <td th:text="${r.newStudyProgram.code}"></td>
         <td th:text="${r.status}"></td>
         <td>
-            <a th:href="@{/ekvivalencii/student-grades/{id} (id=${r.student.index})}" class="btn btn-primary mb-2">
+            <a th:href="@{/ekvivalencii/student-grades/{id} (id=${r.id})}" class="btn btn-primary mb-2">
                 <button type="button" class="btn btn-primary">Add subjects</button>
             </a>
             <a th:href="@{/ekvivalencii/{id}/edit(id=${r.id})}">

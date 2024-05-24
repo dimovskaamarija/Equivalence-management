@@ -18,12 +18,14 @@
                 </div>
                 <div class="card-body">
                     <form   th:action="'/ekvivalencii/' + ${id} + '/edit'" method="POST">
+
                         <input type="hidden" name="id" th:value="${id}" />
                         <input type="hidden" name="id" th:value="${request.id}" />
+                        <input type="hidden" name="student" th:value="${request.student.index}"/>
 
                         <div class="form-group">
                             <label for="student">Студент:</label>
-                            <input type="text" class="form-control" id="student" th:value="${request.student.index}" name="student" placeholder="Enter Student Index">
+                            <input type="text" class="form-control" id="student"  th:value="${request.student.index}" name="student" placeholder="Enter Student Index" disabled>
                         </div>
 
                         <div class="form-group">
@@ -35,7 +37,7 @@
                         <div class="form-group">
                             <label for="newStudyProgram">Нова студиска програма:</label>
                             <select class="form-control" id="newStudyProgram" name="newStudyProgram">
-                                <option th:each="newStudyProgram : ${newStudyPrograms}" th:value="${newStudyProgram.code}" th:text="${newStudyProgram.code}"></option>
+                                <option th:each="newStudyProgram : ${newStudyPrograms}" th:value="${newStudyProgram.code}" th:text="${newStudyProgram.code}" ></option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -44,7 +46,6 @@
                                 <option th:each="s : ${status}" th:value="${s.name()}" th:text="${s.name()}"></option>
                             </select>
                         </div>
-
 
                         <button type="submit" class="btn btn-success ml-2">Save</button>
                     </form>
