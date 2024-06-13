@@ -15,7 +15,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static mk.ukim.finki.wp.ekvivalencii.service.interfaces.specifications.FieldFilterSpecification.filterEquals;
 import static mk.ukim.finki.wp.ekvivalencii.service.interfaces.specifications.FieldFilterSpecification.filterEqualsV;
@@ -45,6 +44,7 @@ public String getStudentRequestManagement(Model model,
                                           @RequestParam(required = false) String newStudyProgram,
                                           @RequestParam(required = false) String status) {
     Page<StudentEquivalenceRequest> studentEquivalenceRequestPage;
+
 
     Specification<StudentEquivalenceRequest> spec = Specification.where(filterEquals(StudentEquivalenceRequest.class, "student.index", index));
 
@@ -92,7 +92,15 @@ public String addRequest(Model model) {
                        @RequestParam (required = false)  StudyProgram newStudyProgram,
                        @RequestParam (defaultValue = "REQUESTED")  EquivalenceStatus status) {
         StudyProgram oldSP=student.getStudyProgram();
-        this.service.save(student, oldSP, newStudyProgram, status);
+        StudentEquivalenceRequest request = new StudentEquivalenceRequest();
+        String idNew = String.format("%s_%s_%s", student.getIndex(), oldSP.getCode(), newStudyProgram.getCode());
+        request.setId(idNew);
+        request.setStudent(student);
+        request.setNewStudyProgram(newStudyProgram);
+        request.setOldStudyProgram(oldSP);
+        request.setStatus(status);
+        student.setStudyProgram(newStudyProgram);
+        this.service.save(request);
         return "redirect:/ekvivalencii";
     }
 
@@ -124,6 +132,7 @@ public String editStudentGrades (@PathVariable String id,
                                  @RequestParam StudyProgram oldStudyProgram,
                                  @RequestParam StudyProgram newStudyProgram,
                                  @RequestParam EquivalenceStatus status) {
+    student.setStudyProgram(newStudyProgram);
     this.service.edit(id, student, oldStudyProgram, newStudyProgram,status);
     return "redirect:/ekvivalencii";
 }

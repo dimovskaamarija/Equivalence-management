@@ -28,6 +28,8 @@ public interface StudentRequestManagementService  {
     Optional<StudentEquivalenceRequest> save(Student student, StudyProgram oldStudyProgram, StudyProgram newStudyProgram,
                                              EquivalenceStatus status);
 
+    void save(StudentEquivalenceRequest request);
+
     void deleteById(String id);
 
     Optional<StudentEquivalenceRequest> findByIndex(String index);

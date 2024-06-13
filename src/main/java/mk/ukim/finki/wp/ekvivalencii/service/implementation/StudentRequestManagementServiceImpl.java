@@ -62,6 +62,12 @@ public class StudentRequestManagementServiceImpl  implements StudentRequestManag
 
         return Optional.of(this.studentRequestManagementRepository.save(new StudentEquivalenceRequest(student,oldStudyProgram,newStudyProgram,status)));
     }
+
+    public void save(StudentEquivalenceRequest request) {
+        this.studentRequestManagementRepository.save(request);
+    }
+
+
     @Override
     public void deleteById(String id) {
         this.studentRequestManagementRepository.deleteById(id);
@@ -71,7 +77,6 @@ public class StudentRequestManagementServiceImpl  implements StudentRequestManag
     public Optional<StudentEquivalenceRequest> findByIndex(String index) {
         return this.studentRequestManagementRepository.findById(index);
     }
-
 
 }
 
