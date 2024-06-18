@@ -1,6 +1,5 @@
 package mk.ukim.finki.wp.ekvivalencii.web;
 
-import jakarta.persistence.criteria.Join;
 import jakarta.servlet.http.HttpServletResponse;
 import mk.ukim.finki.wp.ekvivalencii.model.DTO.StudentGradesDto;
 import mk.ukim.finki.wp.ekvivalencii.model.Student;
@@ -10,7 +9,6 @@ import mk.ukim.finki.wp.ekvivalencii.repository.ImportRepository;
 import mk.ukim.finki.wp.ekvivalencii.service.interfaces.StudentGradesService;
 import mk.ukim.finki.wp.ekvivalencii.service.interfaces.StudentService;
 import mk.ukim.finki.wp.ekvivalencii.service.interfaces.SubjectService;
-import mk.ukim.finki.wp.ekvivalencii.service.specifications.FieldFilterSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -25,7 +23,6 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static mk.ukim.finki.wp.ekvivalencii.service.interfaces.specifications.FieldFilterSpecification.filterEquals;
@@ -55,10 +52,7 @@ public class StudentGradesImportController {
                                    Model model) {
 
         Page<StudentGrades> studentGradesPage;
-        Student student = studentService.findStudentByIndex(studentGrade.getStudent().getIndex());
-        Subject subject = subjectService.findSubjectById(studentGrade.getSubject().getId());
 
-        studentGrade.setId(String.format("%s_%s", student.getIndex(), subject.getId()));
         Specification<StudentGrades> spec = Specification.where(filterEquals(StudentGrades.class, "student.index", index));
 
         if (subjectId != null && !subjectId.isEmpty()) {
@@ -83,35 +77,33 @@ public class StudentGradesImportController {
                                           Model model) {
         List<Student> students = studentService.getAllStudents();
         List<Subject> subjects = subjectService.getAllSubjects();
-        //model.addAttribute("id", id);
+
         model.addAttribute("studentGrade", new StudentGrades());
         model.addAttribute("students", students);
         model.addAttribute("subjects", subjects);
         return "add";
     }
 
-    /*@PostMapping("/ekvivalencii/student-grades/{id}/save")
+    @PostMapping("/ekvivalencii/student-grades/{id}/save")
     public String addStudentGrade(@PathVariable String id,
                                   @RequestParam Student student,
                                   @RequestParam Subject subject,
                                   @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime gradeDate,
                                   @RequestParam Short grade,
                                   @RequestParam String ectsGrade) {
-        this.studentGradesService.save(student, subject, gradeDate, grade, ectsGrade);
-        return "redirect:/ekvivalencii/student-grades/{id}";
-    }*/
 
-    @PostMapping("/ekvivalencii/student-grades/{id}/save")
-    public String saveStudentGrade(@ModelAttribute StudentGrades studentGrade,
-                                   @PathVariable String id) {
-        Student student = studentService.findStudentByIndex(studentGrade.getStudent().getIndex());
-        Subject subject = subjectService.findSubjectById(studentGrade.getSubject().getId());
-        studentGrade.setId(String.format("%s_%s", student.getIndex(), subject.getId()));
-        studentGrade.setStudent(student);
-        studentGrade.setSubject(subject);
-        studentGradesService.saveStudentGrades(studentGrade);
+        StudentGrades grades = new StudentGrades();
+        String newId = String.format("%s_%s", student.getIndex(), subject.getId());
+        grades.setId(newId);
+        grades.setStudent(student);
+        grades.setSubject(subject);
+        grades.setGradeDate(gradeDate);
+        grades.setGrade(grade);
+        grades.setEctsGrade(ectsGrade);
+        this.studentGradesService.saveStudentGrades(grades);
         return "redirect:/ekvivalencii/student-grades/{id}";
     }
+
 
     @PostMapping("/ekvivalencii/student-grades/{id}/delete")
     public String deleteSubject(@PathVariable String id) {
@@ -164,7 +156,7 @@ public class StudentGradesImportController {
                 }
             }
 
-            return "redirect:/ekvivalencii/student-grades/{id}";
+            return "redirect:/ekvivalencii/student-grades/" + id;
         } catch (IOException e) {
             model.addAttribute("error", "An error occurred while processing the file.");
             return "errorPage";
@@ -177,7 +169,7 @@ public class StudentGradesImportController {
                           Model model) {
         List<StudentGradesDto> example = new ArrayList<>();
         example.add(new StudentGradesDto("F23L2W096", "1", "2023-04-10T10:39:37", (short) 8, "72", null));
-        example.add(new StudentGradesDto("F23L2W096", "1", "2023-04-10T10:39:37", (short) 10, "7", null));
+        example.add(new StudentGradesDto("F23L3W074", "1", "2023-04-10T10:39:37", (short) 10, "7", null));
 
         doExport(response, example);
         model.addAttribute("id", id);

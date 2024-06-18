@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layout}">
@@ -61,3 +61,69 @@
 </div>
 </body>
 </html>
+-->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add new student grade</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="mt-4" layout:fragment="content">
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title">Додавање нова оценка</h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:method="POST"
+                              th:action="@{'/ekvivalencii/student-grades/${id}/save' (id=${studentGrade?.id})}">
+                            <input type="hidden" name="id" th:value="${id}"/>
+                            <div class="form-group">
+                                <label for="student">Student:</label>
+                                <input type="text" class="form-control" id="student" name="student" required
+                                       placeholder="Enter student index">
+                            </div>
+
+                            <div class="form-group">
+                                <label for="subject">Subject:</label>
+                                <select class="form-control" id="subject" name="subject">
+                                    <option th:each="subject : ${subjects}" th:value="${subject.id}"
+                                            th:text="${subject.name}"></option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="gradeDate">Grade Date:</label>
+                                <input type="datetime-local" class="form-control" id="gradeDate" name="gradeDate"
+                                       required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="grade">Grade:</label>
+                                <input type="number" class="form-control" id="grade" name="grade" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="ectsGrade">ECTS Grade:</label>
+                                <input type="text" class="form-control" id="ectsGrade" name="ectsGrade" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+

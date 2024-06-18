@@ -11,4 +11,5 @@ import java.util.Optional;
 @Repository
 public interface StudentGradesRepository extends JpaSpecificationRepository<StudentGrades, String> {
     Page<StudentGrades> findByStudent(Optional<Student> student, Pageable pageable);
+
 }
