@@ -12,6 +12,7 @@ import lombok.*;
 @Entity
 public class StudentEquivalenceRequest {
 
+
     @Id
     public String id;
 
