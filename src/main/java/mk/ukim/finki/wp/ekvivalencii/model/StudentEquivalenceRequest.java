@@ -2,7 +2,6 @@ package mk.ukim.finki.wp.ekvivalencii.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 
 @Getter
@@ -14,8 +13,6 @@ import org.hibernate.annotations.GenericGenerator;
 public class StudentEquivalenceRequest {
 
     @Id
-    @GeneratedValue(generator = "UUID")
-    @GenericGenerator(name = "UUID", strategy = "org.hibernate.id.UUIDGenerator")
     public String id;
 
     @ManyToOne
