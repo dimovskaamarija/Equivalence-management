@@ -31,6 +31,7 @@
                             </div>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -67,8 +68,8 @@
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th>Subject</th>
             <th>Student</th>
+            <th>Subject</th>
             <th>Date</th>
             <th>Grade</th>
             <th>Ects Grade</th>
@@ -77,8 +78,8 @@
         </thead>
         <tbody>
         <tr th:each="studentGrade : ${page.getContent()}">
-            <td th:text="${studentGrade.student.index}"></td>
-            <td th:text="${studentGrade.getSubject().id}"></td>
+            <td th:text="${studentGrade.student.index} + ' ' + '(' + ${studentGrade.student.name} + ' '+ ${studentGrade.student.lastName} + ')'"></td>
+            <td th:text="${studentGrade.getSubject().id} + ' ' +  '(' + ${studentGrade.getSubject().name} + ')'"></td>
             <td th:text="${studentGrade.getGradeDate()}"></td>
             <td th:text="${studentGrade.getGrade()}"></td>
             <td th:text="${studentGrade.getEctsGrade()}"></td>

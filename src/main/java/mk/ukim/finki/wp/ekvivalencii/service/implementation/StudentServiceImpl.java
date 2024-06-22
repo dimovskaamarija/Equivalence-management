@@ -25,11 +25,6 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
-    public Optional<Student> getStudentById(String id) {
-        return studentRepository.findById(id);
-    }
-
-    @Override
     public Page<Student> find(Integer page, Integer size, String nameOrIndex, String studyProgramCode) {
         return this.studentRepository.findAll(PageRequest.of(page - 1, size));
     }
@@ -48,6 +43,11 @@ public class StudentServiceImpl implements StudentService {
         return this.studentRepository.findAll();
     }
 
+    @Override
+    public Optional<Student> getStudentById(String studentIndex) {
+        return Optional.of(studentRepository.findByIndex(studentIndex));
+    }
+
     private Optional<StudentDto> saveStudent(StudentDto dto) {
         try {
             Student student = new Student(dto.getIndex(),
@@ -63,5 +63,10 @@ public class StudentServiceImpl implements StudentService {
             dto.setMessage(e.getMessage());
         }
         return Optional.of(dto);
+    }
+
+    @Override
+    public Student findStudentByIndex(String index) {
+        return studentRepository.findByIndex(index);
     }
 }

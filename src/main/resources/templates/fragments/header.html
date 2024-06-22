@@ -14,7 +14,8 @@
                 <a href="/ekvivalencii" class="nav-link px-2 text-white">Equivalence request</a>
             </li>
             <li sec:authorize="hasRole('ROLE_ADMIN')">
-                <a href="/ekvivalencii/student-grades/{id}" class="nav-link px-2 text-white">Student grades</a>
+                <a th:href="@{'/ekvivalencii/student-grades/' + ${id}}" class="nav-link px-2 text-white">Student
+                    grades</a>
             </li>
         </ul>
 

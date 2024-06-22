@@ -24,6 +24,7 @@ public interface StudentGradesService {
 
     void deleteById(String id);
 
+    StudentGrades saveStudentGrades(StudentGrades studentGrades);
     List<StudentGradesDto> importGradesFromCsv(List<StudentGradesDto> importStudentGrades);
 
     StudentGrades saveStudentDto(Subject subject,

@@ -124,6 +124,7 @@ public class StudentGradesServiceImpl implements StudentGradesService {
                 }
 
                 StudentGrades studentGrades = new StudentGrades(student, subject, gradeDate, dto.getGrade(), dto.getEctsGrade());
+                studentGrades.setId(String.format("%s_%s", student.getIndex(), subject.getId()));
                 studentGradesRepository.save(studentGrades);
             } else {
                 dto.setMessage("Student or subject not found");
@@ -131,5 +132,10 @@ public class StudentGradesServiceImpl implements StudentGradesService {
             }
         }
         return invalidGrades;
+    }
+
+    @Override
+    public StudentGrades saveStudentGrades(StudentGrades studentGrades) {
+        return studentGradesRepository.save(studentGrades);
     }
 }
