@@ -11,7 +11,6 @@ import lombok.*;
 @AllArgsConstructor
 @Entity
 public class StudentEquivalenceRequest {
-
     @Id
     public String id;
 
