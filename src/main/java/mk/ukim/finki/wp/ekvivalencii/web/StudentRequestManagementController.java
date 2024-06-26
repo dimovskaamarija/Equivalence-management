@@ -127,7 +127,7 @@ public String edit(@PathVariable String id, Model model){
 }
 
 @PostMapping("/ekvivalencii/{id}/edit")
-public String editStudentGrades (@PathVariable String id,
+public String editStudentRequest(@PathVariable String id,
                                  @RequestParam Student student,
                                  @RequestParam StudyProgram oldStudyProgram,
                                  @RequestParam StudyProgram newStudyProgram,
